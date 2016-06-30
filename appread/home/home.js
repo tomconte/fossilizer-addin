@@ -29,17 +29,16 @@
       from = Office.cast.item.toAppointmentRead(item).organizer;
     }
 
-    $('#from').text(from.displayName);
+    $('#from').text(from.emailAddress);
 
-    var to;
-    to = Office.cast.item.toMessageRead(item).to[0];
-    $('#to').text(to.displayName);
+    var to = Office.cast.item.toMessageRead(item).to[0];
+    $('#to').text(to.emailAddress);
 
     $('#save').click(function () {
       item.body.getAsync('html', function(result) {
         var hash = '0x' + CryptoJS.SHA256(result.value).toString(CryptoJS.enc.Hex);
         console.log(hash);
-        contract.fossilizeEmail(hash, item.subject, from.displayName, to.displayName, {gas: 900000});
+        contract.fossilizeEmail(hash, item.subject, from.emailAddress, to.emailAddress, {gas: 900000});
         app.showNotification("Message saved: " + item.subject, "Hash: " + hash);
       });
     });
